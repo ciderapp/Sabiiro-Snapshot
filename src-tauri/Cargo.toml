@@ -1,0 +1,94 @@
+[package]
+name = "cider"
+version = "x.x.x"
+description = "Cider"
+authors = ["Cider Collective"]
+license = ""
+repository = ""
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[profile.release]
+lto = true
+opt-level = 2
+debug = 0
+strip = "symbols"
+
+[build-dependencies]
+tauri-build = { version = "1.3.0", features = [] }
+cfg-if = "~1.0"
+
+[dependencies]
+tauri = { version = "~1.2", features = [ "fs-all", "window-create", "window-set-focus", "window-center", "window-set-icon", "window-request-user-attention", "window-set-title", "window-show", "process-all", "http-all", "dialog-all", "clipboard-write-text", "devtools", "notification-all", "os-all", "process-command-api", "shell-open", "shell-sidecar", "system-tray", "window-close", "window-hide", "window-maximize", "window-minimize", "window-set-always-on-top", "window-set-fullscreen", "window-set-position", "window-set-size", "window-start-dragging", "window-unmaximize"] }
+serde = { version = "1.0", features = ["derive"] }
+tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "dev" }
+tauri-plugin-deep-link = { git = "https://github.com/FabianLars/tauri-plugin-deep-link", branch = "main" }
+
+tokio = { version = "~1.29", default-features = false, features = ["fs", "macros"] }
+reqwest = { version = "~0.11", features = ["json", "blocking", "rustls-tls"], default-features = false }
+warp = { version = "~0.3", features = [] }
+rouille = "~3.6"
+bytes = "~1.4"
+
+steamworks = { version = "~0.10", optional = true }
+
+thiserror = "~1.0"
+lazy_static = "~1.4"
+obfstr = "~0.4"
+cfg-if = "~1.0"
+futures = "~0.3"
+dialog = "0.3.0"
+native-dialog = "0.7.0"
+
+rustfm-scrobble = "~1.1"
+
+discord-rich-presence = "0.2.3"
+
+zip = "0.6"
+sha2 = "0.10.8"
+mime_guess = "2.0.3"
+
+tauri-plugin-localhost = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+portpicker = "0.1" # used in the example to pick a random free port
+
+
+fon = "0.6.0"
+
+base64 = "0.21.0"
+serde_json = "~1.0"
+md5 = "~0.7"
+
+chrono = "~0.4"
+chashmap = "2.2.2"
+open = "~5.0"
+
+[target.'cfg(macos)'.dependencies]
+objc = "~0.2"
+
+[target.'cfg(windows)'.dependencies]
+# Windows Only
+webview2-com = "~0.19" # DO NOT BUMP
+windows = { version = "~0.39", features = [
+	"Win32_Graphics_Dwm",
+	"Win32_Foundation",
+	"Win32_UI_Controls",
+] } # DO NOT BUMP
+widestring = "~1.0"
+
+[target."cfg(target_os = \"windows\")".dependencies.windows-sys]
+version = "0.45.0"
+features = [
+  "Win32_Foundation",
+  "Win32_System_LibraryLoader",
+  "Win32_System_SystemInformation",
+  "Win32_Graphics_Gdi",
+  "Win32_Graphics_Dwm",
+  "Win32_UI_WindowsAndMessaging"
+]
+
+[features]
+default = ["custom-protocol"]
+steamworks = ["dep:steamworks"]
+# this feature is used for production builds or when `devPath` points to the filesystem
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
